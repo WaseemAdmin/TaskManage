@@ -1,0 +1,318 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 5px 10px;
+}
+
+.title {
+  flex-grow: 1; 
+  text-align: center; 
+  font-size: 3rem;
+  color: #ec6416;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 4px;
+  margin: 0;
+}
+
+.signout-button {
+  display: flex;
+  align-items: center;
+}
+
+.signout-button button {
+  background-color: #e66d1d;
+  color: #fff;
+  font-size: 25px; 
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 10px 30px; 
+  text-align: center;
+}
+
+.signout-button button:hover {
+  background-color: #e78e54;
+}
+
+.signout-button button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+  .addTaskButton{
+    margin-bottom: 10px;
+  }
+
+  .editTaskButton {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e66d1d; 
+    color: #fff; 
+    font-size: 16px;
+    border: none;
+    border-radius: 4px; 
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease; 
+  }
+  
+  .editTaskButton:hover {
+    background-color: #e78e54; 
+  }
+  
+  .editTaskButton:focus {
+    outline: none; 
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+  }
+
+  .editdiv{
+    border: 2px solid #000;
+    width: 30%;
+    margin-right: -10%;
+    padding: 15px;
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.705);
+  }
+
+  .addDiv{
+    border: 2px solid #000;
+    width: 40%;
+    margin-right: 10px;
+    padding: 15px;
+    margin-top: 10px;
+    background-color: rgba(152, 152, 152, 0.705);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .availableTask{
+    border: 2px solid #000;
+    padding: 20px;
+    width: 35%;
+    margin-right: 50px;
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.705);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .availabel-button-container {
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: flex-end;
+    gap: 5px; 
+  }
+
+  .taskSubject{
+    text-decoration: underline;
+    font-weight: bold;
+    font-size: 180%; 
+    white-space:normal;
+    overflow:visible;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
+
+  .task-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px;
+  }
+  
+ 
+  #updateForm {
+    position: absolute;
+    border: 2px solid #000;
+    width: 40%;
+    padding: 30px;
+    background-color: rgba(174, 174, 174, 0.978);
+    display: flex;
+    flex-direction: column;
+    right: 25%;
+
+  }
+  
+
+  .searchFilterDiv{
+    display: flex; 
+    margin-bottom: 20px;
+    justify-content: center;
+  }
+
+  .search-container input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 250px;
+    font-size: 16px;
+  }
+
+  .date-filter input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  #subject,
+  #description{
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 30%;
+    max-width: 70%;
+    font-size: 18px;
+  }
+  
+  #dueDate{
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+  }
+
+  #addTaskh{
+    text-decoration: underline;
+    font-size: 200%;
+    margin-bottom: 20px;
+    color:#000000;
+    text-align: center;
+    align-items: center;
+  }
+
+  #UpdateTaskh{
+    text-decoration: underline;
+    font-size: 200%;
+    margin-bottom: 20px;
+    color:#000000;
+    text-align: center;
+  }
+
+  #subb{
+    font-size: 140%;
+  }
+
+  #UpdatedSub{
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 40%;
+    font-size: 16px;
+  }
+
+  #UpdatedDesc{
+    display:inline;
+    max-width: 80%;
+    width: 40%;
+    font-size: 18px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+
+  #UpdatedDate{
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 30%;
+    font-size: 16px;
+  }
+
+  #editButtUpdate{
+    font-size: 22px;
+  }
+
+  #editButtCancel{
+    font-size: 22px;
+  }
+
+
+  .cancelAddBut{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e66d1d; 
+    color: #fff;
+    font-size: 19px;
+    border: none;
+    border-radius: 4px; 
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+
+
+  .cancelAddBut:hover {
+    background-color: #e78e54;  
+  }
+  
+  .cancelAddBut:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .saveAddBut{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e66d1d;
+    color: #fff; 
+    font-size: 19px;
+    border: none;
+    border-radius: 4px; 
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease; 
+  }
+
+  .saveAddBut:hover {
+    background-color: #e78e54; 
+  }
+  
+  .saveAddBut:focus {
+    outline: none; 
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+  }
+
+  .Add-task-button-container {
+    margin-top: auto; /* Push the buttons to the bottom of the container */
+    display: flex;
+    justify-content: flex-end; 
+    gap: 10px; 
+  }
+
+  .showMsgEdit{
+    color: #ff0000;
+    font-size: 20px;
+  }
+
+  .showMsgAdd {
+    color: #ff0000; 
+    font-size: 20px; 
+    font-weight: bold; 
+    padding: 5px 10px; 
+    background-color: rgb(255, 255, 255); 
+    border: 1px solid #f00; 
+    border-radius: 6px; 
+    text-align: center; 
+    margin-bottom: 15px; 
+  }
+
+  .update-div-buttons-container {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 10px; 
+  }
+
+.description,
+.dueDate {
+  font-size: 140%; 
+  white-space: pre-line; 
+  word-wrap: break-word; 
+}
+  
+  

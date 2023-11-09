@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+    background-image: url('./img.png'); /* Replace 'path/to/your/image.jpg' with the actual path to your image file */
+    background-size: 80%; /* Adjust to fit the viewport as needed */
+    background-repeat: no-repeat; /* Prevent image from repeating */
+    background-attachment: fixed; /* Keep the image fixed in the viewport */
+    /* Add other background-related styles as needed */
+    background-position: center bottom -40px;;
+  }

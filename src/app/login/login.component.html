@@ -1,0 +1,46 @@
+<div>
+    <h1 class="welcome">Welcome</h1>
+</div>
+<div class="login-container">
+    <h1 style="font-size: 200%;" >Login</h1>
+    <!-- Login div -->
+    <form class="login-form">
+      <div class="form-group">
+        <label for="username" style="font-size: larger;">Username:</label>
+        <input type="text"  [(ngModel)]="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password" style="font-size: larger;">Password:</label>
+        <input type="password" [(ngModel)]="password" name="password" required>
+      </div>
+      <button (click)="login()" class="login-button">Login</button>
+    </form>
+    <p class="signup-link" style="font-size: larger;">
+      Don't have an account? <a (click)="showSignupForm = !showSignupForm">Sign up</a>
+    </p>
+    <!-- Sign up div (conditionally displayed) -->
+    <div *ngIf="showSignupForm" class="signup-form">
+      <h2 style="font-size: 180%;"><u>Sign Up</u></h2>
+      <form>
+        <div class="form-group">
+          <label for="signup-username" style="font-size: larger;">Username:</label>
+          <input type="text" [(ngModel)]="signupUsername" name="signup-username" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-password" style="font-size: larger;">Password:</label>
+          <input type="password" [(ngModel)]="signupPassword" name="signup-password" required>
+        </div>
+        <button (click)="signup()" class="signup-button">Sign Up</button>
+      </form>
+    <div *ngIf="errorMessage" class="error-message" style="font-size: larger;">
+      {{ errorMessage }}
+    </div>
+    </div>
+    <div *ngIf="showAMessage" class="registration-success" style="font-size: larger;">
+      {{ theMessage }}
+    </div>
+    <div *ngIf="missMsg" class="login-fail" style="font-size: larger;">
+      {{ missingData }}
+    </div>
+    
+  </div>

@@ -1,0 +1,71 @@
+<!-- Title and signout button div -->
+<div class="header-container">
+  <h1 class="title">Task Management</h1>
+  <div class="signout-button">
+    <button class="btn btn-danger" (click)="signOut()">Sign Out</button>
+  </div>
+</div>
+<br/>
+
+<!-- Search by text and date div-->
+<div class="searchFilterDiv">
+    <div class="search-container">
+        <input type="text" id="search" [(ngModel)]="searchTerm"  placeholder="Search tasks by subject, or/and date ">&nbsp;&nbsp;
+    </div>
+
+    <div class="date-filter">
+        <input type="date" id="filterDate" [(ngModel)]="filterDate" (change)="filterTasksByDate()" />
+    </div>
+</div>
+
+<button (click)="showAddForm = true" class="editTaskButton">Add Task</button><br/>
+
+<!-- Add form div (conditionally displayed) -->
+<div *ngIf="showAddForm" class="addDiv">
+  <div id="addTaskh"><b>Add Task</b></div>
+  <div id="subb">Subject : <input id="subject" ><br><br></div>
+  <div id="subb">Description : <textarea id="description" rows="1" cols="50"></textarea><br><br></div>
+  <div id="subb">Due Date : <input type="date" id="dueDate"><br><br></div>
+  <div *ngIf="addTaskMsgflag" class="showMsgAdd">
+      {{ addTaskMessage }}
+  </div>
+  <div class="Add-task-button-container">
+    <button (click)="showAddForm = false" class="cancelAddBut">Cancel</button>&nbsp;
+    <button (click)="addTask()" class="saveAddBut">Add Task</button>
+  </div>
+</div>
+
+<div>
+    <!-- Displaying available (cuurent data) divs-->
+    <h1>Available tasks : </h1>
+    <div *ngFor="let task of filteredTasksByDate() ">
+      <div class="task-container">
+        <div id="taskInfo" class="availableTask">
+          <div class="availabel-button-container">
+            <button (click)="deleteTask(task.ID)" class="editTaskButton">Delete Task</button>
+            <button (click)="Edit(task.ID,task.Subject,task.Description,task.DueDate || '')" class="editTaskButton">Edit Task</button>
+          </div>
+          <div class="taskSubject"><b>{{task.Subject}}</b></div>
+          <br />
+          <div class="description"><b><u>Description:</u></b> &nbsp; {{task.Description}}</div>
+          &nbsp;
+          <div class="dueDate"><b><u>Due Date:</u></b> &nbsp; {{task.DueDate}}</div>
+        </div>
+  
+        <!-- The Edit form div (conditionally displayed)--> 
+        <div id="updateForm" *ngIf="showEditForm && updatedID === task.ID" class="editdiv">
+          <div id="UpdateTaskh"><b>Update Task</b></div>
+            <div id="subb">Subject : <input id="UpdatedSub"></div><br><br>
+            <div id="subb">Description : <textarea id="UpdatedDesc" rows="1" cols="50"></textarea></div><br><br>
+            <div id="subb">Due Date : <input type="date" id="UpdatedDate"></div><br>
+            <div *ngIf="EditTaskMsgflag" class="showMsgEdit">
+              {{ EditTaskMessage }}
+            </div>
+            <div class="update-div-buttons-container">
+              <button id="editButtCancel" (click)="showEditForm = false" class="editTaskButton">Cancel</button>&nbsp;&nbsp;
+              <button id="editButtUpdate" (click)="sendUpdateRequest()" class="editTaskButton">Update Task</button>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
