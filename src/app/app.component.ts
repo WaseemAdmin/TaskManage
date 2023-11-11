@@ -11,7 +11,7 @@ export class AppComponent {
   constructor(private router: Router) {}
   
   navigateToLogin() {
-    // Use the router.navigate method to navigate to the 'login' route
+    // router.navigate to navigate to the 'login' route
     this.router.navigate(['login']);
   }
 }

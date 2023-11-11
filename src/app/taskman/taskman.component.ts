@@ -16,13 +16,9 @@ export class TaskmanComponent {
   showEditForm = false; // Edit/Update div 
   updatedID: number | null = null; // To store Update task id
   searchTerm: string = ''; // To store the search term
-  updatedSubject:string='';
-  updatedDescription:string='';
-  updatedDate:string ='';
   filteredTasks: any[] = []; // To store filtered tasks
   filterDate: string = ''; // storing date for filtering
   tasks: Task[] = []; // global array from type Task in task.model.ts
- 
 
   addTaskMsgflag=false; // warning msg for add div
   addTaskMessage='';
@@ -48,28 +44,42 @@ export class TaskmanComponent {
     }, 5000); // 5 seconds
   }
 
-   readonly APIurl ="http://localhost:5000/api/taskapp/" //variable to save the API url
+  readonly APIurl ="http://localhost:5000/api/taskapp/" //variable to save the API url
 
-   constructor(private http:HttpClient,private datePipe: DatePipe , private router: Router){
-   }
- 
-   refreshTasks() // show all tasks , also called when added / delete and update tasks
-   {
-     this.http.get<Task[]>(this.APIurl+'GetTasks').subscribe((data) => {
-      this.tasks = data.map((task:Task) => ({
+  constructor(private http:HttpClient,private datePipe: DatePipe , private router: Router){
+  }
+
+  refreshTasks() 
+  {
+    this.http.get<Task[]>(this.APIurl + 'GetTasks').subscribe((data) => {
+      this.tasks = data.map((task: Task) => ({
         ...task,
-        DueDate: task.DueDate ? this.datePipe.transform(task.DueDate, 'dd-MM-yyyy'):''
+        DueDate: task.DueDate ? this.datePipe.transform(task.DueDate, 'yyyy-MM-dd') : ''
       }));
-      console.log(this.tasks);
-     })
-   }
+  
+    // Sort tasks based on DueDate, treating null values as distant future
+    this.tasks.sort((a, b) => {
+      const dateA = a.DueDate ? new Date(a.DueDate) : new Date('9999-12-31');
+      const dateB = b.DueDate ? new Date(b.DueDate) : new Date('9999-12-31');
+  
+      return dateA.getTime() - dateB.getTime();
+      });
+  
+    // Format the date for display
+    this.tasks = this.tasks.map((task: Task) => ({
+      ...task,
+      DueDate: task.DueDate ? this.datePipe.transform(task.DueDate, 'dd-MM-yyyy') : ''
+    }));
+    console.log(this.tasks);
+    });
+  }
 
-   ngOnInit(){  // life cycle method called "ngOnInit" , which gets executed on Page load
-     this.refreshTasks();
-   }
+  ngOnInit(){  // life cycle method called "ngOnInit" , which gets executed on Page load
+    this.refreshTasks();
+  }
 
-   // Filtering by Date or Search input
-   filteredTasksByDate(): Task[] {
+  // Filtering by Date or Search input
+  filteredTasksByDate(): Task[] {
     if (this.filterDate) {
       const filterDateFormatted = this.datePipe.transform(this.filterDate, 'dd-MM-yyyy');
       if (filterDateFormatted) {
@@ -137,176 +147,56 @@ export class TaskmanComponent {
   }
  
   // Delete Task function
-   deleteTask(id:any){
+  deleteTask(id:any){
      this.http.delete(this.APIurl+'DeleteTask?id='+id).subscribe(data=>{
        this.refreshTasks();
      })
-   }
+  }
  
-   // Update Task function
-   updateTask(id: any, updatedSubject: string, updatedDescription: string, updatedDate: string)
+  // Update Task function
+  updateTask(id: any)
   {
-    var UpdatedSubjectss = (<HTMLInputElement>document.getElementById("UpdatedSub")).value;
-    var UpdatedDescriptionss = (<HTMLInputElement>document.getElementById("UpdatedDesc")).value;
-    var UpdatedDatess = (<HTMLInputElement>document.getElementById("UpdatedDate")).value;
+    var newUpdatedSubject = (<HTMLInputElement>document.getElementById("UpdatedSub")).value;
+    var newUpdatedDescription = (<HTMLInputElement>document.getElementById("UpdatedDesc")).value;
+    var newUpdatedDate = (<HTMLInputElement>document.getElementById("UpdatedDate")).value;
 
-    if (!UpdatedSubjectss && !UpdatedDescriptionss && !UpdatedDatess) 
+    if (!newUpdatedSubject && !newUpdatedDescription && !newUpdatedDate) 
     {
       // All fields are empty
-      this.showEditMessage("Missing data: You have to fill at least one of the fields");
+      this.showEditMessage("Missing data : All fields should filled with data");
     } 
-    else if (!UpdatedSubjectss && !UpdatedDescriptionss) 
+    else if (!newUpdatedSubject && !newUpdatedDescription) 
     {
       // Subject and Description are empty
-        UpdatedSubjectss=updatedSubject;
-        UpdatedDescriptionss=updatedDescription;
-
-        var parsedNewDate = new Date(UpdatedDatess); 
-        var currentDate = new Date();
-        currentDate.setHours(0, 0, 0, 0);
-        if (parsedNewDate < currentDate) {
-          this.showEditMessage("Due Date should be a future date.");
-          return;
-        }
-
-        var formData = new FormData();
-        formData.append("Subject", UpdatedSubjectss);
-        formData.append("Description", UpdatedDescriptionss);
-        formData.append("DueDate", UpdatedDatess);
-
-        this.http.put(this.APIurl + 'UpdateTask?id=' + id, formData).subscribe(data => {
-          this.refreshTasks();
-        });
-        this.updatedSubject='';
-        this.updatedDescription='';
-        this.updatedDate='';
-        this.showEditForm=false;
+      this.showEditMessage("Missing data: Subject and Description are empty");
     } 
-    else if (!UpdatedSubjectss && !UpdatedDatess) 
+    else if (!newUpdatedSubject && !newUpdatedDate) 
     {
       // Subject and Due Date are empty
-        UpdatedSubjectss=updatedSubject;
-
-        const parts = updatedDate.split('-');
-        const day = parts[0];
-        const month = parts[1];
-        const year = parts[2];
-        const newDate = year + '-' + month + '-' + day;
-        UpdatedDatess = newDate;
-
-        var formData = new FormData();
-        formData.append("Subject", UpdatedSubjectss);
-        formData.append("Description", UpdatedDescriptionss);
-        formData.append("DueDate", UpdatedDatess);
-
-        this.http.put(this.APIurl + 'UpdateTask?id=' + id, formData).subscribe(data => {
-          this.refreshTasks();
-        });
-        this.updatedSubject='';
-        this.updatedDescription='';
-        this.updatedDate='';
-        this.showEditForm=false;
+      this.showEditMessage("Missing data: Subject and Due Date are empty");
     } 
-    else if (!UpdatedDescriptionss && !UpdatedDatess) 
+    else if (!newUpdatedDescription && !newUpdatedDate) 
     {
       // Description and Due Date are empty
-      UpdatedDescriptionss=updatedDescription;
-      
-      const parts = updatedDate.split('-');
-      const day = parts[0];
-      const month = parts[1];
-      const year = parts[2];
-      const newDate = year + '-' + month + '-' + day;
-      UpdatedDatess = newDate;
-      
-      console.log(UpdatedDatess);
-      var formData = new FormData();
-      formData.append("Subject", UpdatedSubjectss);
-      formData.append("Description", UpdatedDescriptionss);
-      formData.append("DueDate", UpdatedDatess);
-
-      this.http.put(this.APIurl + 'UpdateTask?id=' + id, formData).subscribe(data => {
-        this.refreshTasks();
-      });
-      this.updatedSubject='';
-      this.updatedDescription='';
-      this.updatedDate='';
-      this.showEditForm=false;
+      this.showEditMessage("Missing data: Description and Due Date are empty");
     } 
-    else if (!UpdatedSubjectss) 
+    else if (!newUpdatedSubject) 
     {
       // Subject is empty
-      UpdatedSubjectss=updatedSubject;
-
-      var parsedNewDate = new Date(UpdatedDatess); 
-      var currentDate = new Date();
-      currentDate.setHours(0, 0, 0, 0);
-      if (parsedNewDate < currentDate) {
-        this.showEditMessage("Due Date should be a future date.");
-        return;
-      }
-      var formData = new FormData();
-      formData.append("Subject", UpdatedSubjectss);
-      formData.append("Description", UpdatedDescriptionss);
-      formData.append("DueDate", UpdatedDatess);
-
-      this.http.put(this.APIurl + 'UpdateTask?id=' + id, formData).subscribe(data => {
-        this.refreshTasks();
-      });
-      this.updatedSubject='';
-      this.updatedDescription='';
-      this.updatedDate='';
-      this.showEditForm=false;
+      this.showEditMessage("Missing data: Subject is empty");
     } 
-    else if (!UpdatedDescriptionss) 
+    else if (!newUpdatedDescription) 
     {
       // Description is empty
-      UpdatedDescriptionss=updatedDescription;
-      var parsedNewDate = new Date(UpdatedDatess); 
-      var currentDate = new Date();
-      currentDate.setHours(0, 0, 0, 0);
-      if (parsedNewDate < currentDate) {
-        this.showEditMessage("Due Date should be a future date.");
-        return;
-      }
-      var formData = new FormData();
-      formData.append("Subject", UpdatedSubjectss);
-      formData.append("Description", UpdatedDescriptionss);
-      formData.append("DueDate", UpdatedDatess);
-
-      this.http.put(this.APIurl + 'UpdateTask?id=' + id, formData).subscribe(data => {
-        this.refreshTasks();
-      });
-      this.updatedSubject='';
-      this.updatedDescription='';
-      this.updatedDate='';
-      this.showEditForm=false;
+      this.showEditMessage("Missing data: Description is empty");
     } 
-    else if (!UpdatedDatess) 
-    {
+    else if (!newUpdatedDate) {
       // Due Date is empty
-      const parts = updatedDate.split('-');
-      const day = parts[0];
-      const month = parts[1];
-      const year = parts[2];
-      const newDate = year + '-' + month + '-' + day;
-      UpdatedDatess = newDate;
-      var formData = new FormData();
-      formData.append("Subject", UpdatedSubjectss);
-      formData.append("Description", UpdatedDescriptionss);
-      formData.append("DueDate", UpdatedDatess);
-
-      this.http.put(this.APIurl + 'UpdateTask?id=' + id, formData).subscribe(data => {
-        this.refreshTasks();
-      });
-      this.updatedSubject='';
-      this.updatedDescription='';
-      this.updatedDate='';
-      this.showEditForm=false;
-    } 
+      this.showEditMessage("Missing data: Due Date is empty");
+    }
     else  // non of fileds are empty 
     {
-      var parsedNewDate = new Date(UpdatedDatess); 
+      var parsedNewDate = new Date(newUpdatedDate); 
       var currentDate = new Date();
       currentDate.setHours(0, 0, 0, 0);
       if (parsedNewDate < currentDate) {
@@ -314,37 +204,42 @@ export class TaskmanComponent {
         return;
       }
       var formData = new FormData();
-      formData.append("Subject", UpdatedSubjectss);
-      formData.append("Description", UpdatedDescriptionss);
-      formData.append("DueDate", UpdatedDatess);
+      formData.append("Subject", newUpdatedSubject);
+      formData.append("Description", newUpdatedDescription);
+      formData.append("DueDate", newUpdatedDate);
+
+      console.log("non of the fields are empty" + newUpdatedDate);
 
       this.http.put(this.APIurl + 'UpdateTask?id=' + id, formData).subscribe(data => {
         this.refreshTasks();
       });
-      this.updatedSubject='';
-      this.updatedDescription='';
-      this.updatedDate='';
       this.showEditForm=false;
     }
   }
  
   // Edit Task functions
-   Edit(id:any,updatedSubject: string, updatedDescription: string, updatedDate: string)
-   {
-     this.showEditForm = true;
-     this.updatedID = id;
-     this.updatedSubject=updatedSubject;
-     this.updatedDescription=updatedDescription;
-     this.updatedDate=updatedDate;
-     console.log(this.updatedID)
-   }
+  Edit(id:any)
+  {
+    this.showEditForm = true;
+    this.updatedID = id;
+  }
  
-   sendUpdateRequest(){
-     this.updateTask(this.updatedID ,  this.updatedSubject,this.updatedDescription,this.updatedDate)
-   }
+  sendUpdateRequest(){
+    this.updateTask(this.updatedID)
+  }
 
-   // Sign Out button function 
-   signOut() {
+  formatDate(dateString: string | null): string 
+  {
+    if (!dateString) {
+      return ''; // or any default value you want for null dates
+    }
+  
+    const [day, month, year] = dateString.split('-');
+    return `${year}-${month}-${day}`;
+  }
+
+  // Sign Out button function 
+  signOut() {
     // Navigate back to the login page
     this.router.navigate(['/login']);
   }
