@@ -16,7 +16,6 @@ export class TaskmanComponent {
   showEditForm = false; // Edit/Update div 
   updatedID: number | null = null; // To store Update task id
   searchTerm: string = ''; // To store the search term
-  filteredTasks: any[] = []; // To store filtered tasks
   filterDate: string = ''; // storing date for filtering
   tasks: Task[] = []; // global array from type Task in task.model.ts
 
@@ -79,7 +78,7 @@ export class TaskmanComponent {
   }
 
   // Filtering by Date or Search input
-  filteredTasksByDate(): Task[] {
+  filteredTasks(): Task[] {
     if (this.filterDate) {
       const filterDateFormatted = this.datePipe.transform(this.filterDate, 'dd-MM-yyyy');
       if (filterDateFormatted) {
@@ -92,9 +91,6 @@ export class TaskmanComponent {
     return this.tasks.filter((task: Task) => task.Subject.toLowerCase().includes(this.searchTerm.toLowerCase()));
   }
   
-  filterTasksByDate() {
-    this.filteredTasks = this.filteredTasksByDate();
-  }
  
   // Add Task Function 
   addTask() {
@@ -139,7 +135,7 @@ export class TaskmanComponent {
       formData.append("Description", newDescription);
       formData.append("DueDate", newDate);
       this.http.post(this.APIurl + 'AddTask', formData).subscribe((data: any) => {
-        //display the result and also refresh the tasks data
+        //refresh the tasks data
         this.refreshTasks();
         this.showAddForm = false;
       });
@@ -231,7 +227,7 @@ export class TaskmanComponent {
   formatDate(dateString: string | null): string 
   {
     if (!dateString) {
-      return ''; // or any default value you want for null dates
+      return '';
     }
   
     const [day, month, year] = dateString.split('-');

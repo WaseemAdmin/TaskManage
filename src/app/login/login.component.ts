@@ -130,7 +130,7 @@ export class LoginComponent {
     this.http.post(this.APIurl + 'GetUser', body).subscribe(
       (data: any) => {
         if (data === 'User Found') {
-          // The user was found in the database.
+          // The user found in the database.
           console.log('User found');
           this.authService.login();
           this.router.navigate(['/taskManagement']); // Navigate to the app component

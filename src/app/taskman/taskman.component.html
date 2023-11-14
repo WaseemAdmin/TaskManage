@@ -14,7 +14,7 @@
     </div>
 
     <div class="date-filter">
-        <input type="date" id="filterDate" [(ngModel)]="filterDate" (change)="filterTasksByDate()" />
+        <input type="date" id="filterDate" [(ngModel)]="filterDate" (change)="filteredTasks()" />
     </div>
 </div>
 
@@ -45,7 +45,7 @@
 <div>
     <!-- Displaying available (cuurent data) divs-->
     <h1>Available tasks : </h1>
-    <div *ngFor="let task of filteredTasksByDate() ">
+    <div *ngFor="let task of filteredTasks() ">
       <div class="task-container">
         <div id="taskInfo" class="availableTask">
           <div class="availabel-button-container">
