@@ -1,3 +1,4 @@
+Task Management Application , developed using Angular for frontend, .NET for backend and Microsoft Azure for database.
 # Taskapp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.8.
